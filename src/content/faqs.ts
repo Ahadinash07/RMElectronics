@@ -65,4 +65,8 @@ export const SERVICES_FAQS: Faq[] = [
     q: "Can you help if my TV has no sound or distorted sound?",
     a: "You can book an assessment for sound problems. When you enquire, mention whether the issue happens on every input and whether you use headphones or external speakers; the cause needs to be checked.",
   },
+  {
+    q: "Do you look at Smart TV app or Wi-Fi problems?",
+    a: "You can ask about app, Wi-Fi or start-up problems. Share the brand and model, what happens when you open the app or connect, and whether other devices connect to your Wi-Fi. Some issues can be related to the home network rather than the TV.",
+  },
 ];

@@ -42,7 +42,7 @@ export default async function ThankYouPage() {
         </p>
         {BUSINESS.whatsappVerified ? (
           <p className="mt-3 text-sm text-muted">
-            A WhatsApp draft with the details you entered was opened in a new tab. Press Send in WhatsApp to message RM Electronics.
+            The site tries to open a WhatsApp draft with your details. Review it and press Send in WhatsApp; if it did not open, use the WhatsApp button below.
           </p>
         ) : null}
         <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">

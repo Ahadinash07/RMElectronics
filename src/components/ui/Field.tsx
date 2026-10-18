@@ -41,12 +41,6 @@ function FieldShell({ id, label, required, hint, error, children }: ShellProps) 
           {hint}
         </p>
       ) : null}
-      {error ? (
-        <p id={`${id}-error`} className="mt-1.5 text-sm font-medium text-danger">
-          <span className="font-semibold">Error: </span>
-          {error}
-        </p>
-      ) : null}
     </div>
   );
 }

@@ -50,6 +50,7 @@ export default function PrivacyPolicyPage() {
           <ul className={ul}>
             <li>The form sends your details to this website&rsquo;s server over an encrypted connection, where they are checked.</li>
             <li>The server then passes the enquiry on to the business through a delivery service: either an email delivery provider to the business inbox, or the business&rsquo;s own enquiry or CRM system.</li>
+            <li>When WhatsApp is enabled, after the server accepts an enquiry the site may open a pre-filled WhatsApp draft containing the details you entered. The message is not sent unless you press Send in WhatsApp; WhatsApp&rsquo;s own terms and privacy practices then apply.</li>
             <li>If delivery fails, the website tells you the enquiry was not sent. It never shows a confirmation for an enquiry that was not delivered.</li>
             <li>To limit spam, the server briefly keeps your device&rsquo;s IP address in memory to count how many enquiries come from it. The IP address is not added to the enquiry.</li>
             <li>The website host and the delivery provider may keep ordinary technical logs under their own terms.</li>

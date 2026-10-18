@@ -85,6 +85,8 @@ export function RepairEnquiryForm({ active, placement, defaultBrand, onSuccess }
   const [values, setValues] = useState<EnquiryFormValues>(EMPTY_VALUES);
   const [errors, setErrors] = useState<FieldErrors>({});
   const [submitting, setSubmitting] = useState(false);
+  const [contactAttempted, setContactAttempted] = useState(false);
+  const [touchedFields, setTouchedFields] = useState<Partial<Record<FieldName, boolean>>>({});
   const [banner, setBanner] = useState<Banner>(null);
   const [honeypot, setHoneypot] = useState("");
 
@@ -121,6 +123,7 @@ export function RepairEnquiryForm({ active, placement, defaultBrand, onSuccess }
 
   function update(field: FieldName, value: string | boolean) {
     markStarted();
+    setTouchedFields((prev) => ({ ...prev, [field]: true }));
     const next = { ...effective, [field]: value } as EnquiryFormValues;
     setValues(next);
     setBanner(null);
@@ -136,6 +139,7 @@ export function RepairEnquiryForm({ active, placement, defaultBrand, onSuccess }
   }
 
   function validateOne(field: FieldName) {
+    if (!touchedFields[field]) return;
     const fresh = validateFormValues(effective)[field];
     setErrors((prev) => {
       const copy = { ...prev };
@@ -147,9 +151,17 @@ export function RepairEnquiryForm({ active, placement, defaultBrand, onSuccess }
 
   function goTo(next: Step) {
     setBanner(null);
-    // Errors belong to the step that was validated. Do not carry contact
-    // errors into the contact step when the visitor advances from step 2.
     setErrors({});
+    if (next === 3) {
+      setContactAttempted(false);
+      setTouchedFields((prev) => {
+        const copy = { ...prev };
+        delete copy.name;
+        delete copy.phone;
+        delete copy.consent;
+        return copy;
+      });
+    }
     setStep(next);
   }
 
@@ -170,6 +182,7 @@ export function RepairEnquiryForm({ active, placement, defaultBrand, onSuccess }
     trackEvent("form_error", { error_category: category });
     if (!first) return;
     const target = STEP_OF_FIELD[first];
+    if (target === 3) setContactAttempted(true);
     if (target !== step) setStep(target);
     const count = Object.keys(fieldErrors).length;
     setBanner({ message: `Please check ${count === 1 ? "the highlighted field" : `the ${count} highlighted fields`} and try again.`, showCall: false });
@@ -181,6 +194,7 @@ export function RepairEnquiryForm({ active, placement, defaultBrand, onSuccess }
     if (step !== 3) return next();
     if (submittingRef.current) return; // duplicate-submission guard
 
+    setContactAttempted(true);
     const clientErrors = validateFormValues(effective);
     if (Object.keys(clientErrors).length > 0) return showFieldErrors(clientErrors, "validation_client");
 
@@ -221,16 +235,17 @@ export function RepairEnquiryForm({ active, placement, defaultBrand, onSuccess }
       }
 
       if (response.ok && data?.ok === true) {
-        // The form submission has already been accepted by the configured
-        // server provider. WhatsApp is a customer-controlled follow-up draft:
-        // the visitor still presses Send in WhatsApp.
+        // The provider has accepted the enquiry. The user still sends the WhatsApp draft manually.
         if (BUSINESS.whatsappVerified) {
-          window.open(buildWhatsAppUrl(formatEnquiryWhatsAppMessage(effective)), "_blank", "noopener,noreferrer");
+          const whatsappUrl = buildWhatsAppUrl(formatEnquiryWhatsAppMessage(effective));
+          window.open(whatsappUrl, "_blank", "noopener,noreferrer");
         }
         // Server accepted the lead: only now reset and move to the thank-you page.
         submissionId.current = null;
         setValues(EMPTY_VALUES);
         setErrors({});
+        setContactAttempted(false);
+        setTouchedFields({});
         setStep(1);
         onSuccess?.();
         router.push("/thank-you");
@@ -263,6 +278,11 @@ export function RepairEnquiryForm({ active, placement, defaultBrand, onSuccess }
       // The callback runs from an input event; update also marks analytics state in refs.
       // eslint-disable-next-line react-hooks/refs
       update(field, e.target.value);
+
+  const onPhoneChange = (e: ChangeEvent<HTMLInputElement>) => {
+    // Keep the controlled value to ASCII digits only, including pasted/autofilled values.
+    update("phone", e.currentTarget.value.replace(/\D/g, "").slice(0, 10));
+  };
 
   const cardBase =
     "flex min-h-14 w-full cursor-pointer items-center justify-center rounded-control border-2 border-line bg-surface px-3 py-3 text-center text-base font-semibold text-ink-2 transition-colors hover:border-accent peer-checked:border-accent peer-checked:bg-lavender-100 peer-checked:text-brand peer-focus-visible:outline peer-focus-visible:outline-[3px] peer-focus-visible:outline-offset-2 peer-focus-visible:outline-info";
@@ -409,7 +429,7 @@ export function RepairEnquiryForm({ active, placement, defaultBrand, onSuccess }
               value={effective.name}
               onChange={onText("name")}
               onBlur={() => validateOne("name")}
-              error={errors.name}
+              error={contactAttempted || touchedFields.name ? errors.name : undefined}
               data-autofocus
             />
             <TextField
@@ -417,13 +437,15 @@ export function RepairEnquiryForm({ active, placement, defaultBrand, onSuccess }
               label="Mobile number"
               required
               type="tel"
-              inputMode="tel"
-              autoComplete="tel"
-              placeholder="98765 43210"
+              inputMode="numeric"
+              autoComplete="tel-national"
+              maxLength={10}
+              pattern="[0-9]{10}"
+              placeholder="9876543210"
               value={effective.phone}
-              onChange={onText("phone")}
+              onChange={onPhoneChange}
               onBlur={() => validateOne("phone")}
-              error={errors.phone}
+              error={contactAttempted || touchedFields.phone ? errors.phone : undefined}
             />
           </div>
 
@@ -442,8 +464,8 @@ export function RepairEnquiryForm({ active, placement, defaultBrand, onSuccess }
                 checked={effective.consent}
                 onChange={(e) => update("consent", e.target.checked)}
                 aria-required="true"
-                aria-invalid={errors.consent ? true : undefined}
-                aria-describedby={errors.consent ? `${idFor("consent")}-error` : undefined}
+                aria-invalid={contactAttempted && errors.consent ? true : undefined}
+                aria-describedby={contactAttempted && errors.consent ? `${idFor("consent")}-error` : undefined}
                 className="mt-0.5 h-6 w-6 shrink-0 rounded border-[#9ca3af] accent-brand"
               />
               <label htmlFor={idFor("consent")} className="text-sm leading-snug text-ink-2">
@@ -454,7 +476,7 @@ export function RepairEnquiryForm({ active, placement, defaultBrand, onSuccess }
                 .
               </label>
             </div>
-            {errors.consent ? (
+            {contactAttempted && errors.consent ? (
               <p id={`${idFor("consent")}-error`} className="mt-1.5 text-sm font-medium text-danger">
                 <span className="font-semibold">Error: </span>
                 {errors.consent}
@@ -484,14 +506,18 @@ export function RepairEnquiryForm({ active, placement, defaultBrand, onSuccess }
             <Icon name="arrowRight" className="h-4 w-4" />
           </button>
         ) : (
-          <button type="submit" disabled={submitting} className={buttonClasses("primary", "md", "ml-auto")}>
-            {submitting ? "Sending..." : "Book doorstep visit"}
-            {submitting ? null : <Icon name="arrowRight" className="h-4 w-4" />}
+          <button
+            type="submit"
+            disabled={submitting}
+            className={buttonClasses(BUSINESS.whatsappVerified ? "whatsapp" : "primary", "md", "ml-auto")}
+          >
+            {submitting ? "Sending..." : BUSINESS.whatsappVerified ? "Continue with WhatsApp" : "Book doorstep visit"}
+            {submitting ? null : <Icon name={BUSINESS.whatsappVerified ? "whatsapp" : "arrowRight"} className="h-4 w-4" />}
           </button>
         )}
       </div>
 
-      {/* <p className="mt-3 text-center text-xs text-muted">
+      <p className="mt-3 text-center text-xs text-muted">
         {DOORSTEP.visitingChargeText} Prefer to talk?{" "}
         <CallLink placement="form" className="font-semibold text-link underline underline-offset-4">
           Call {BUSINESS.phone.display}
@@ -504,7 +530,7 @@ export function RepairEnquiryForm({ active, placement, defaultBrand, onSuccess }
           <Icon name="whatsapp" className="h-4 w-4" />
           <span>WhatsApp</span>
         </WhatsAppLink>
-      </p> */}
+      </p>
     </form>
   );
 }

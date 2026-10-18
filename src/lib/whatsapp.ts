@@ -16,6 +16,7 @@ export function formatEnquiryWhatsAppMessage(values: EnquiryFormValues): string 
 
   if (values.locality.trim()) lines.push(`Area: ${values.locality.trim()}`);
   if (values.model.trim()) lines.push(`TV model: ${values.model.trim()}`);
+  if (values.contactMethod.trim()) lines.push(`Preferred contact: ${values.contactMethod.trim()}`);
   if (values.details.trim()) lines.push(`Additional details: ${values.details.trim()}`);
 
   return lines.join("\n");

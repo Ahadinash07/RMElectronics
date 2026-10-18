@@ -28,11 +28,13 @@ describe("WhatsApp enquiry draft", () => {
       problem: "Other",
       locality: "Nagole",
       model: "55UQ7500",
+      contactMethod: "WhatsApp",
       details: "The TV restarts after a few minutes.",
     });
 
     assert.match(message, /Area: Nagole/);
     assert.match(message, /TV model: 55UQ7500/);
+    assert.match(message, /Preferred contact: WhatsApp/);
     assert.match(message, /Additional details: The TV restarts after a few minutes\./);
   });
 });

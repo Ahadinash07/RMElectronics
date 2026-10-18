@@ -47,7 +47,7 @@ export function DialogShell({ open, onClose, title, description, closeLabel, chi
         if (event.target === event.currentTarget) onClose();
       }}
     >
-      <div className="max-h-[92dvh] overflow-y-auto overscroll-contain rounded-t-2xl bg-white p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom,0px))] shadow-xl md:max-h-[calc(100dvh-2rem)] md:rounded-2xl md:p-7">
+      <div className="w-full max-w-2xl max-h-[calc(100vh-2rem)] max-h-[calc(100dvh-2rem)] overflow-y-auto overscroll-contain rounded-2xl bg-white p-5 shadow-xl sm:p-7">
         <div className="mb-5 flex items-start justify-between gap-4">
           <div>
             <h2 id={titleId} className="heading-3">

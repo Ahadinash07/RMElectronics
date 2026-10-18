@@ -91,7 +91,8 @@ export default function ContactPage() {
               </li>
             </ul>
             <HoursBlock />
-            
+            <WhatsAppLink placement="contact_page" asButton size="lg" className="w-full sm:w-auto" />
+
             <div>
               <h3 className="text-sm font-semibold uppercase tracking-wide text-brand">Follow RM Electronics</h3>
               <ul className="mt-2 flex flex-wrap gap-x-6">

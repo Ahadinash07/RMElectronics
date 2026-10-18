@@ -109,24 +109,29 @@
     @apply font-medium text-link underline decoration-link/40 underline-offset-4 hover:decoration-link;
   }
 
-  /* Enquiry dialog: bottom sheet on phones, centred modal from md up. */
+  /* Full-viewport flex overlay keeps variable-height form steps centered. */
   .enquiry-dialog {
     position: fixed;
     inset: 0;
-    margin: auto 0 0 0;
+    margin: 0;
+    display: none;
     width: 100%;
-    max-width: 100%;
-    height: auto;
-    max-height: 92dvh;
-    padding: 0;
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    box-sizing: border-box;
+    padding: 1rem;
     border: 0;
     background: transparent;
     color: inherit;
-    overflow: visible;
+    overflow: auto;
+    align-items: center;
+    justify-content: center;
   }
 
   .enquiry-dialog[open] {
-    animation: sheet-in 220ms ease-out;
+    display: flex;
+    animation: dialog-in 180ms ease-out;
   }
 
   .enquiry-dialog::backdrop {
@@ -151,23 +156,14 @@
     background: rgb(17 24 39 / 0.82);
   }
 
-  @media (min-width: 768px) {
-    .enquiry-dialog {
-      margin: auto;
-      width: min(40rem, calc(100% - 2rem));
-      max-height: calc(100dvh - 2rem);
-    }
-  }
 }
 
-@keyframes sheet-in {
+@keyframes dialog-in {
   from {
     opacity: 0;
-    transform: translateY(1.25rem);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 

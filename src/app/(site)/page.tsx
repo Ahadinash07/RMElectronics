@@ -1,6 +1,5 @@
 import { BrandGrid } from "@/components/sections/BrandGrid";
 import { DoorstepSection } from "@/components/sections/DoorstepSection";
-import { ContactStrip } from "@/components/sections/ContactStrip";
 import { FaqSection } from "@/components/sections/FaqSection";
 import { FinalCta } from "@/components/sections/FinalCta";
 import { Hero } from "@/components/sections/Hero";
@@ -27,7 +26,6 @@ export default function HomePage() {
     <>
       <JsonLd data={[localBusinessJsonLd(), websiteJsonLd()]} />
       <Hero />
-      <ContactStrip />
       <DoorstepSection tone="white" />
       <ProblemGrid />
       <ServiceGrid />

@@ -8,7 +8,7 @@ import Image from "next/image";
 export function Logo({ className = "" }: { className?: string }) {
   return (
     <span className={`inline-flex items-center gap-2.5 ${className}`}>
-      <Image src="/images/rm-electronics-icon.webp" alt="" width={222} height={174} className="h-9 w-auto sm:h-10" />
+      <Image src="/images/logo.png" alt="" width={222} height={174} className="h-14 w-auto sm:h-14" />
     </span>
   );
 }

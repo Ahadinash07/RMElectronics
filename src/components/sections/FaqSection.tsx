@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { WhatsAppLink } from "@/components/analytics/ContactLinks";
-import { BUSINESS, DOORSTEP } from "@/content/site";
+import { CallLink, WhatsAppLink } from "@/components/analytics/ContactLinks";
+import { DOORSTEP } from "@/content/site";
 import type { Faq } from "@/content/faqs";
 import { Icon } from "@/components/ui/Icon";
 import { SectionHeading } from "./SectionHeading";
@@ -36,6 +36,15 @@ export function FaqSection({
               <p className="mt-3 text-sm text-ink-2">
                 Service areas include {DOORSTEP.areas.join(", ")}. Call to confirm your area.
               </p>
+              <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1">
+                <CallLink placement="faq" className="inline-flex min-h-11 items-center gap-2 font-semibold text-link">
+                  <Icon name="phone" className="h-5 w-5" />
+                  Call Now
+                </CallLink>
+                <WhatsAppLink placement="faq" className="inline-flex min-h-11 items-center gap-2 font-semibold text-link">
+                  WhatsApp
+                </WhatsAppLink>
+              </div>
             </div>
           </div>
           <div className="space-y-3">
