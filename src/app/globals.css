@@ -1,0 +1,210 @@
+@import "tailwindcss";
+
+/* Design tokens. Palette is taken from the RM Electronics logo:
+   black-to-navy gradient (#010101 -> #1B1A46), lavender (#A088E8) and white. */
+@theme {
+  --color-brand: #1b1a46; /* logo navy: headings, outlines */
+  --color-navy: #0e0d2a; /* deep navy for dark bands */
+  --color-navy-950: #05050f; /* logo gradient start (near black) */
+  --color-accent: #a088e8; /* logo lavender: primary buttons, highlights */
+  --color-accent-hover: #b5a2f0;
+  --color-lavender-100: #ece8fb;
+  --color-lavender-200: #cdc5f0; /* secondary text on dark */
+  --color-info: #7c5ce6; /* focus rings on light backgrounds */
+  --color-link: #4a3cc2; /* link text on white (7:1 contrast) */
+  --color-whatsapp: #25d366;
+  --color-surface: #f5f4fc;
+  --color-ink: #14122e;
+  --color-ink-2: #3b3a58;
+  --color-muted: #5f5d7a;
+  --color-line: #e2dff3;
+  --color-success: #15803d;
+  --color-danger: #b91c1c;
+
+  --radius-card: 1rem;
+  --radius-control: 0.75rem;
+  --shadow-card: 0 1px 2px rgb(20 18 46 / 0.05), 0 6px 20px rgb(20 18 46 / 0.07);
+
+  --breakpoint-xs: 26rem;
+}
+
+@theme inline {
+  --font-sans:
+    var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    sans-serif;
+}
+
+:root {
+  /* Height reserved for the fixed mobile action bar (excluding the safe-area inset). */
+  --mobile-bar-h: 4.75rem;
+}
+
+@layer base {
+  html {
+    scroll-padding-top: 5.5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: #ffffff;
+    color: var(--color-ink-2);
+    line-height: 1.6;
+    overflow-x: hidden;
+    padding-bottom: calc(var(--mobile-bar-h) + env(safe-area-inset-bottom, 0px));
+  }
+
+  @media (min-width: 1024px) {
+    body {
+      padding-bottom: 0;
+    }
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-info);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-[72rem] px-4 sm:px-6 lg:px-8;
+  }
+
+  .section {
+    @apply py-8 sm:py-10 lg:py-14;
+  }
+
+  .heading-1 {
+    @apply text-[2rem] leading-[1.1] font-bold tracking-tight text-brand sm:text-[2.5rem] lg:text-5xl;
+  }
+
+  .heading-2 {
+    @apply text-2xl leading-tight font-bold tracking-tight text-brand sm:text-3xl lg:text-4xl;
+  }
+
+  .heading-3 {
+    @apply text-lg leading-snug font-semibold text-brand sm:text-xl;
+  }
+
+  .lead {
+    @apply text-base leading-relaxed text-ink-2 sm:text-lg;
+  }
+
+  .card {
+    @apply rounded-card border border-line bg-white p-5 shadow-card sm:p-6;
+  }
+
+  .text-link {
+    @apply font-medium text-link underline decoration-link/40 underline-offset-4 hover:decoration-link;
+  }
+
+  /* Enquiry dialog: bottom sheet on phones, centred modal from md up. */
+  .enquiry-dialog {
+    position: fixed;
+    inset: 0;
+    margin: auto 0 0 0;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 92dvh;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    overflow: visible;
+  }
+
+  .enquiry-dialog[open] {
+    animation: sheet-in 220ms ease-out;
+  }
+
+  .enquiry-dialog::backdrop {
+    background: rgb(17 24 39 / 0.55);
+  }
+
+  .gallery-dialog {
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    width: min(64rem, calc(100% - 1rem));
+    max-width: none;
+    max-height: calc(100dvh - 1rem);
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    overflow: visible;
+  }
+
+  .gallery-dialog::backdrop {
+    background: rgb(17 24 39 / 0.82);
+  }
+
+  @media (min-width: 768px) {
+    .enquiry-dialog {
+      margin: auto;
+      width: min(40rem, calc(100% - 2rem));
+      max-height: calc(100dvh - 2rem);
+    }
+  }
+}
+
+@keyframes sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Dark navy bands (header, hero, page headers, final call to action, footer).
+   Add data-dark to the element; text, links and secondary buttons adapt automatically. */
+.bg-brand-gradient {
+  background: linear-gradient(115deg, #05050f 0%, #12113a 55%, #1b1a46 100%);
+}
+
+[data-dark] {
+  color: var(--color-lavender-100);
+}
+[data-dark] .heading-1,
+[data-dark] .heading-2,
+[data-dark] .heading-3,
+[data-dark] .text-brand,
+[data-dark] .text-ink {
+  color: #ffffff;
+}
+[data-dark] .lead,
+[data-dark] .text-ink-2,
+[data-dark] .text-muted {
+  color: var(--color-lavender-200);
+}
+[data-dark] .text-link,
+[data-dark] .eyebrow {
+  color: #d3c8fb;
+  text-decoration-color: rgb(211 200 251 / 0.5);
+}
+[data-dark] :focus-visible {
+  outline-color: #d3c8fb;
+}
+[data-dark] .btn-secondary {
+  border-color: #ffffff;
+  background: transparent;
+  color: #ffffff;
+}
+[data-dark] .btn-secondary:hover {
+  background: rgb(255 255 255 / 0.12);
+}
