@@ -78,7 +78,7 @@
 
 @layer components {
   .container-page {
-    @apply mx-auto w-full max-w-[72rem] px-4 sm:px-6 lg:px-8;
+    @apply mx-auto w-full max-w-[80rem] px-4 sm:px-6 lg:px-8;
   }
 
   .section {

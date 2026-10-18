@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CallLink } from "@/components/analytics/ContactLinks";
+import { CallLink, WhatsAppLink } from "@/components/analytics/ContactLinks";
 import { BookRepairButton } from "@/components/forms/BookRepairButton";
 import { DoorstepSection } from "@/components/sections/DoorstepSection";
 import { FaqSection } from "@/components/sections/FaqSection";
@@ -61,6 +61,7 @@ export default async function BrandPage({ params }: { params: Promise<Params> })
           <>
             <CallLink placement={`brand_${brand.slug}_hero`} asButton variant="primary" size="lg" />
             <BookRepairButton placement={`brand_${brand.slug}_hero`} brand={brand.formBrand} variant="secondary" size="lg" />
+            <WhatsAppLink placement={`brand_${brand.slug}_hero`} asButton size="lg" />
           </>
         }
       >
@@ -125,6 +126,7 @@ export default async function BrandPage({ params }: { params: Promise<Params> })
             <div className="mt-5 flex flex-col gap-3 sm:flex-row">
               <BookRepairButton placement={`brand_${brand.slug}_details`} brand={brand.formBrand} />
               <CallLink placement={`brand_${brand.slug}_details`} asButton variant="secondary" />
+              <WhatsAppLink placement={`brand_${brand.slug}_details`} asButton />
             </div>
           </div>
         </div>

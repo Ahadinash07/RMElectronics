@@ -1,15 +1,13 @@
-import { CallLink } from "@/components/analytics/ContactLinks";
+import { CallLink, WhatsAppLink } from "@/components/analytics/ContactLinks";
 import { BookRepairButton } from "@/components/forms/BookRepairButton";
 import { DoorstepSection } from "@/components/sections/DoorstepSection";
 import { FinalCta } from "@/components/sections/FinalCta";
 import { JsonLd } from "@/components/sections/JsonLd";
 import { PageHero } from "@/components/sections/PageHero";
 import { ProcessSteps } from "@/components/sections/ProcessSteps";
-import { SectionHeading } from "@/components/sections/SectionHeading";
 import { TrustPoints } from "@/components/sections/TrustPoints";
 import { GallerySection } from "@/components/sections/GallerySection";
 import { IMAGES } from "@/content/images";
-import { INDEPENDENT_DISCLAIMER } from "@/content/site";
 import { breadcrumbJsonLd, buildMetadata } from "@/lib/seo";
 
 export const metadata = buildMetadata({
@@ -31,6 +29,7 @@ export default function AboutPage() {
           <>
             <CallLink placement="about_hero" asButton variant="primary" size="lg" />
             <BookRepairButton placement="about_hero" variant="secondary" size="lg" />
+            <WhatsAppLink placement="about_hero" asButton size="lg" />
           </>
         }
       >

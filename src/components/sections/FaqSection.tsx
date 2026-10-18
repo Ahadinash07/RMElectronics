@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { WhatsAppLink } from "@/components/analytics/ContactLinks";
 import { BUSINESS, DOORSTEP } from "@/content/site";
 import type { Faq } from "@/content/faqs";
 import { Icon } from "@/components/ui/Icon";
@@ -35,10 +36,6 @@ export function FaqSection({
               <p className="mt-3 text-sm text-ink-2">
                 Service areas include {DOORSTEP.areas.join(", ")}. Call to confirm your area.
               </p>
-              <a href={BUSINESS.phone.href} className="mt-4 inline-flex min-h-11 items-center gap-2 font-semibold text-link">
-                <Icon name="phone" className="h-5 w-5" />
-                Call {BUSINESS.phone.display}
-              </a>
             </div>
           </div>
           <div className="space-y-3">

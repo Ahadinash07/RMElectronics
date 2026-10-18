@@ -3,14 +3,15 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useId, useRef, useState, type ChangeEvent, type FormEvent } from "react";
-import { CallLink } from "@/components/analytics/ContactLinks";
+import { CallLink, WhatsAppLink } from "@/components/analytics/ContactLinks";
 import { buttonClasses } from "@/components/ui/button-styles";
-import { TextAreaField, TextField } from "@/components/ui/Field";
+import { TextField } from "@/components/ui/Field";
 import { Icon, type IconName } from "@/components/ui/Icon";
-import { BUSINESS, DOORSTEP } from "@/content/site";
+import { BUSINESS, buildWhatsAppUrl, DOORSTEP } from "@/content/site";
 import { trackEvent } from "@/lib/analytics";
 import { readAttribution } from "@/lib/attribution";
 import { uuid } from "@/lib/uuid";
+import { formatEnquiryWhatsAppMessage } from "@/lib/whatsapp";
 import {
   BRAND_OPTIONS,
   EMPTY_VALUES,
@@ -38,7 +39,7 @@ type Props = {
 const STEPS: { n: Step; label: string }[] = [
   { n: 1, label: "Brand" },
   { n: 2, label: "Problem" },
-  { n: 3, label: "Details" },
+  { n: 3, label: "Contact" },
 ];
 
 const PROBLEM_ICONS: Record<string, IconName> = {
@@ -73,7 +74,7 @@ function failureMessage(status: number, code: string | undefined): { message: st
 }
 
 /**
- * Three-step enquiry wizard: 1) TV brand  2) problem  3) your details (two fields per row).
+ * Three-step enquiry wizard: 1) TV brand  2) problem  3) your name and mobile number.
  * Short steps mean the form never needs a long scroll. Validation runs on the client for
  * instant feedback AND again on the server; success is shown only after the server accepts the lead.
  */
@@ -146,6 +147,9 @@ export function RepairEnquiryForm({ active, placement, defaultBrand, onSuccess }
 
   function goTo(next: Step) {
     setBanner(null);
+    // Errors belong to the step that was validated. Do not carry contact
+    // errors into the contact step when the visitor advances from step 2.
+    setErrors({});
     setStep(next);
   }
 
@@ -200,6 +204,8 @@ export function RepairEnquiryForm({ active, placement, defaultBrand, onSuccess }
         body: JSON.stringify({
           ...effective,
           website: honeypot,
+          // This runs inside the submit event handler, not during render.
+          // eslint-disable-next-line react-hooks/purity
           elapsedMs: Math.round(performance.now() - openedAt.current),
           submissionId: submissionId.current,
           attribution: readAttribution(),
@@ -215,6 +221,12 @@ export function RepairEnquiryForm({ active, placement, defaultBrand, onSuccess }
       }
 
       if (response.ok && data?.ok === true) {
+        // The form submission has already been accepted by the configured
+        // server provider. WhatsApp is a customer-controlled follow-up draft:
+        // the visitor still presses Send in WhatsApp.
+        if (BUSINESS.whatsappVerified) {
+          window.open(buildWhatsAppUrl(formatEnquiryWhatsAppMessage(effective)), "_blank", "noopener,noreferrer");
+        }
         // Server accepted the lead: only now reset and move to the thank-you page.
         submissionId.current = null;
         setValues(EMPTY_VALUES);
@@ -247,13 +259,17 @@ export function RepairEnquiryForm({ active, placement, defaultBrand, onSuccess }
 
   const onText =
     (field: FieldName) =>
-    (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
+    (e: ChangeEvent<HTMLInputElement>) =>
+      // The callback runs from an input event; update also marks analytics state in refs.
+      // eslint-disable-next-line react-hooks/refs
       update(field, e.target.value);
 
   const cardBase =
     "flex min-h-14 w-full cursor-pointer items-center justify-center rounded-control border-2 border-line bg-surface px-3 py-3 text-center text-base font-semibold text-ink-2 transition-colors hover:border-accent peer-checked:border-accent peer-checked:bg-lavender-100 peer-checked:text-brand peer-focus-visible:outline peer-focus-visible:outline-[3px] peer-focus-visible:outline-offset-2 peer-focus-visible:outline-info";
 
   const headingClass = "heading-3 outline-none";
+  const hasEnquiryDetails = Boolean(effective.name || effective.phone || effective.brand || effective.problem);
+  const whatsappMessage = hasEnquiryDetails ? formatEnquiryWhatsAppMessage(effective) : undefined;
 
   return (
     <form onSubmit={onSubmit} noValidate aria-busy={submitting} className="w-full">
@@ -372,11 +388,11 @@ export function RepairEnquiryForm({ active, placement, defaultBrand, onSuccess }
         </fieldset>
       ) : null}
 
-      {/* Step 3: details, two fields per row */}
+      {/* Step 3: contact details */}
       {step === 3 ? (
         <div>
           <h3 ref={headingRef} tabIndex={-1} className={headingClass}>
-            Where should the technician come?
+            How can we reach you?
           </h3>
           <p className="mt-1 text-sm text-ink-2">
             {effective.brand} &middot; {effective.problem}.{" "}
@@ -384,7 +400,7 @@ export function RepairEnquiryForm({ active, placement, defaultBrand, onSuccess }
               Change
             </button>
           </p>
-          <div className="mt-3 grid gap-x-3 gap-y-3 sm:grid-cols-2">
+          <div className="mt-3 grid gap-3 sm:grid-cols-2">
             <TextField
               id={idFor("name")}
               label="Your name"
@@ -408,38 +424,6 @@ export function RepairEnquiryForm({ active, placement, defaultBrand, onSuccess }
               onChange={onText("phone")}
               onBlur={() => validateOne("phone")}
               error={errors.phone}
-            />
-            <TextField
-              id={idFor("locality")}
-              label="Area in Hyderabad"
-              required
-              placeholder="For example, Nagole"
-              value={effective.locality}
-              onChange={onText("locality")}
-              onBlur={() => validateOne("locality")}
-              error={errors.locality}
-            />
-            <TextField
-              id={idFor("model")}
-              label="TV model"
-              placeholder="From the back label"
-              maxLength={60}
-              value={effective.model}
-              onChange={onText("model")}
-              onBlur={() => validateOne("model")}
-              error={errors.model}
-            />
-          </div>
-          <div className="mt-3">
-            <TextAreaField
-              id={idFor("details")}
-              label="Anything else we should know?"
-              maxLength={500}
-              rows={2}
-              value={effective.details}
-              onChange={onText("details")}
-              onBlur={() => validateOne("details")}
-              error={errors.details}
             />
           </div>
 
@@ -507,12 +491,20 @@ export function RepairEnquiryForm({ active, placement, defaultBrand, onSuccess }
         )}
       </div>
 
-      <p className="mt-3 text-center text-xs text-muted">
+      {/* <p className="mt-3 text-center text-xs text-muted">
         {DOORSTEP.visitingChargeText} Prefer to talk?{" "}
         <CallLink placement="form" className="font-semibold text-link underline underline-offset-4">
           Call {BUSINESS.phone.display}
         </CallLink>
-      </p>
+        <WhatsAppLink
+          placement="form"
+          message={whatsappMessage}
+          className="ml-2 inline-flex items-center gap-1 font-semibold text-link underline underline-offset-4"
+        >
+          <Icon name="whatsapp" className="h-4 w-4" />
+          <span>WhatsApp</span>
+        </WhatsAppLink>
+      </p> */}
     </form>
   );
 }

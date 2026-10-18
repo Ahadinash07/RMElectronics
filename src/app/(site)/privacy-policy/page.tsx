@@ -32,8 +32,8 @@ export default function PrivacyPolicyPage() {
           <p className="mt-3">If you submit the repair enquiry form, the website receives:</p>
           <ul className={ul}>
             <li>Your name and mobile number.</li>
-            <li>Your TV brand, the problem you selected, and your area (not your full address).</li>
-            <li>Optionally: your TV model, preferred contact method and any extra details you type.</li>
+            <li>Your TV brand and the problem you selected.</li>
+            <li>Optional enquiry details, such as your area, TV model, preferred contact method or any extra details you provide.</li>
             <li>A record that you ticked the consent box, and which version of this notice applied.</li>
             <li>
               Campaign labels (such as the advertising source and the page you arrived on) if you came from an advert. These describe the campaign, not you.

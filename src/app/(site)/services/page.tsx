@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { CallLink } from "@/components/analytics/ContactLinks";
+import { CallLink, WhatsAppLink } from "@/components/analytics/ContactLinks";
 import { BookRepairButton } from "@/components/forms/BookRepairButton";
 import { BrandGrid } from "@/components/sections/BrandGrid";
 import { FaqSection } from "@/components/sections/FaqSection";
@@ -34,6 +34,7 @@ export default function ServicesPage() {
           <>
             <BookRepairButton placement="services_hero" size="lg" />
             <CallLink placement="services_hero" asButton variant="secondary" size="lg" />
+            <WhatsAppLink placement="services_hero" asButton size="lg" />
           </>
         }
       >

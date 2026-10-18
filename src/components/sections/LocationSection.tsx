@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { CallLink, DirectionsLink } from "@/components/analytics/ContactLinks";
+import { CallLink, DirectionsLink, WhatsAppLink } from "@/components/analytics/ContactLinks";
 import { Icon } from "@/components/ui/Icon";
 import { IMAGES } from "@/content/images";
 import { BUSINESS } from "@/content/site";
@@ -32,6 +32,7 @@ export function LocationSection({ tone = "white" }: { tone?: "white" | "surface"
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <DirectionsLink placement="location" asButton variant="secondary" size="lg" />
             <CallLink placement="location" asButton variant="primary" size="lg" />
+            <WhatsAppLink placement="location" asButton size="lg" />
           </div>
         </div>
         <figure>

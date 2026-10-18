@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { CallLink } from "@/components/analytics/ContactLinks";
+import { CallLink, WhatsAppLink } from "@/components/analytics/ContactLinks";
 import { LeadConversion } from "@/components/analytics/LeadConversion";
 import { Icon } from "@/components/ui/Icon";
 import { buttonClasses } from "@/components/ui/button-styles";
@@ -40,11 +40,17 @@ export default async function ThankYouPage() {
         <p className="mt-3 text-sm text-muted">
           Reference: <span className="font-mono font-semibold text-ink">{reference}</span>
         </p>
+        {BUSINESS.whatsappVerified ? (
+          <p className="mt-3 text-sm text-muted">
+            A WhatsApp draft with the details you entered was opened in a new tab. Press Send in WhatsApp to message RM Electronics.
+          </p>
+        ) : null}
         <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
           <CallLink placement="thank_you" asButton variant="primary" size="lg">
             <Icon name="phone" />
             <span>Call RM Electronics</span>
           </CallLink>
+          <WhatsAppLink placement="thank_you" asButton size="lg" />
           <Link href="/" className={buttonClasses("secondary", "lg")}>
             Return to Home
           </Link>

@@ -16,7 +16,7 @@ function classFor({ asButton, variant = "secondary", size = "md", className = ""
   return asButton ? buttonClasses(variant, size, className) : className;
 }
 
-/** tel: link. Shows "Call 78934 57190" by default. */
+/** tel: link. Shows the main business number by default. */
 export function CallLink(props: ButtonProps) {
   const { placement, children } = props;
   return (
@@ -30,7 +30,7 @@ export function CallLink(props: ButtonProps) {
       {children ?? (
         <>
           <Icon name="phone" />
-          <span>Call Now</span>
+          <span>Call</span>
         </>
       )}
     </TrackedLink>
@@ -53,7 +53,7 @@ export function WhatsAppLink(props: ButtonProps & { message?: string }) {
       {children ?? (
         <>
           <Icon name="whatsapp" />
-          <span>WhatsApp us</span>
+          <span>WhatsApp</span>
         </>
       )}
     </TrackedLink>

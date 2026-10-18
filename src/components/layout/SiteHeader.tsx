@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CallLink } from "@/components/analytics/ContactLinks";
+import { CallLink, WhatsAppLink } from "@/components/analytics/ContactLinks";
 import { BookRepairButton } from "@/components/forms/BookRepairButton";
 import { Icon } from "@/components/ui/Icon";
 import { Logo } from "@/components/ui/Logo";
@@ -25,6 +25,7 @@ export function SiteHeader() {
 
         <div className="hidden items-center gap-3 lg:flex">
           <CallLink placement="header" asButton variant="secondary" />
+          <WhatsAppLink placement="header" asButton size="md" />
           <BookRepairButton placement="header">Book Doorstep Repair</BookRepairButton>
         </div>
 

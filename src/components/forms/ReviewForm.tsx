@@ -37,6 +37,8 @@ export function ReviewForm({ onDone }: Props) {
 
   // Track time since the form first became visible (basic bot check). Done lazily on first input.
   const touchTimer = () => {
+    // This runs from an input event, not during render.
+    // eslint-disable-next-line react-hooks/purity
     if (openedAt.current === 0) openedAt.current = performance.now();
   };
 
@@ -136,6 +138,8 @@ export function ReviewForm({ onDone }: Props) {
   const onText =
     (field: ReviewFieldName) =>
     (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
+      // The callback runs from an input event; update also marks timing state in refs.
+      // eslint-disable-next-line react-hooks/refs
       update(field, e.target.value);
 
   if (sent) {

@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { DirectionsLink } from "@/components/analytics/ContactLinks";
+import { DirectionsLink, WhatsAppLink } from "@/components/analytics/ContactLinks";
 import { Icon } from "@/components/ui/Icon";
 import { FullLogo } from "@/components/ui/Logo";
 import { PUBLISHED_BRANDS } from "@/content/brands";
-import { BUSINESS, DOORSTEP, INDEPENDENT_DISCLAIMER, NAV_LINKS } from "@/content/site";
+import { BUSINESS, NAV_LINKS } from "@/content/site";
 
 export function SiteFooter() {
   const year = new Date().getFullYear();
@@ -89,6 +89,11 @@ export function SiteFooter() {
                 <Icon name="navigation" className="h-5 w-5" />
                 Get directions to the shop
               </DirectionsLink>
+            </p>
+            <p>
+              <WhatsAppLink placement="footer" className="text-link inline-flex min-h-11 items-center gap-2">
+                WhatsApp
+              </WhatsAppLink>
             </p>
           </address>
         </div>

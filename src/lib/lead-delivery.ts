@@ -76,7 +76,7 @@ export function formatLeadText(lead: ValidEnquiry, reference: string, receivedAt
     `TV brand: ${lead.brand}`,
     `Model: ${lead.model || "Not provided"}`,
     `Problem: ${lead.problem}`,
-    `Area: ${lead.locality}`,
+    `Area: ${lead.locality || "Not provided"}`,
     `Preferred contact: ${lead.contactMethod || "Not specified"}`,
     "",
     "Additional details:",

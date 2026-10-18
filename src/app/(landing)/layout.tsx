@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CallLink } from "@/components/analytics/ContactLinks";
+import { CallLink, WhatsAppLink } from "@/components/analytics/ContactLinks";
 import { Logo } from "@/components/ui/Logo";
 import { BUSINESS, DOORSTEP, INDEPENDENT_DISCLAIMER } from "@/content/site";
 
@@ -13,7 +13,10 @@ export default function LandingLayout({ children }: { children: React.ReactNode 
       <header data-dark className="sticky top-0 z-30 border-b border-white/10 bg-brand-gradient">
         <div className="container-page flex h-16 items-center justify-between gap-3">
           <Logo />
-          <CallLink placement="lp_header" asButton variant="secondary" />
+          <div className="flex items-center gap-2">
+            <CallLink placement="lp_header" asButton variant="secondary" />
+            <WhatsAppLink placement="lp_header" asButton />
+          </div>
         </div>
       </header>
       <main id="main" tabIndex={-1} className="outline-none">

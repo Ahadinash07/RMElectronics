@@ -1,9 +1,11 @@
+import { BUSINESS } from "./site";
+
 export type Faq = { q: string; a: string };
 
 export const GENERAL_FAQS: Faq[] = [
   {
     q: "Does a technician come to my home?",
-    a: "Yes. RM Electronics is a doorstep TV repair service across Hyderabad. Call 78934 57190 or book online, and tell us your area so we can confirm the visit.",
+    a: `Yes. RM Electronics is a doorstep TV repair service across Hyderabad. Call ${BUSINESS.phone.display} or book online, and tell us your area so we can confirm the visit.`,
   },
   {
     q: "What is the visiting charge?",
@@ -62,9 +64,5 @@ export const SERVICES_FAQS: Faq[] = [
   {
     q: "Can you help if my TV has no sound or distorted sound?",
     a: "You can book an assessment for sound problems. When you enquire, mention whether the issue happens on every input and whether you use headphones or external speakers; the cause needs to be checked.",
-  },
-  {
-    q: "Do you look at Smart TV app or Wi-Fi problems?",
-    a: "You can ask about app, Wi-Fi or start-up problems. Share the brand and model, what happens when you open the app or connect, and whether other devices connect to your Wi-Fi. Some issues can be related to the home network rather than the TV.",
   },
 ];

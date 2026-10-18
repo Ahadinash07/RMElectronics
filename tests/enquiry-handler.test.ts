@@ -64,6 +64,19 @@ describe("enquiry handler", () => {
     assert.equal(calls.length, 1);
   });
 
+  it("accepts the shorter form payload without optional contact details", async () => {
+    const { locality: _locality, model: _model, contactMethod: _contactMethod, details: _details, ...shortPayload } = goodPayload();
+    void _locality;
+    void _model;
+    void _contactMethod;
+    void _details;
+    const { fetchFn } = okFetch();
+    const { handler } = build({ fetchFn });
+    const res = await handler(req(shortPayload));
+    assert.equal(res.status, 200);
+    assert.deepEqual(res.body, { ok: true, reference: "REF00001" });
+  });
+
   it("NEVER reports success when delivery is not configured", async () => {
     const { handler, logs } = build({ env: {} });
     const res = await handler(req(goodPayload()));

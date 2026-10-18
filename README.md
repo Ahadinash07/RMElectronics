@@ -38,7 +38,7 @@ npm run dev                    # http://localhost:3000
 - **Deliberately NOT published** because they came only from an unsourced AI summary: opening hours 9 am to 9 pm, 30 to 90 day part warranty, "10,000+ TVs repaired", workshop pick-and-drop as a promise, and customer quotes. Add each in `site.ts` only after the owner confirms it. The site says only that "if a TV needs workshop work, the team explains the options".
 - **Logo palette** (sampled from the logo): navy gradient `#010101` to `#1B1A46`, lavender `#A088E8`, white. Tokens are in `src/app/globals.css`. Add `data-dark` to any element to make it a dark navy band (text, links and secondary buttons adapt automatically). Primary buttons are lavender with navy text (5.6:1 contrast).
 - **Logo and favicon:** `public/images/rm-electronics-logo.webp` (full logo, transparent), `rm-electronics-icon.webp` (monitor mark used in the header next to live text), `src/app/icon.png`, `apple-icon.png`, `favicon.ico` and the social image `rm-electronics-og.png` were all generated from the supplied logo.
-- **Booking form:** a 3-step wizard (1 brand, 2 problem, 3 details with two fields per row). Same real server delivery and honest error states as before. It appears in a dialog everywhere and inline in the desktop hero and on the contact page.
+- **Booking form:** a 3-step wizard (1 brand, 2 problem, 3 name and mobile number). Same real server delivery and honest error states as before. It appears in a dialog everywhere and inline in the desktop hero and on the contact page.
 - **Spacing:** section padding was reduced (`.section` in `globals.css`), plus tighter hero, header and grid gaps.
 
 ## Routes
@@ -152,7 +152,9 @@ Ask happy customers for a Google review after each repair; that is the strongest
 ## WhatsApp
 
 Hidden by default. After the owner confirms the number is on WhatsApp, set `NEXT_PUBLIC_WHATSAPP_VERIFIED=true`.
-Buttons then appear in the hero, mobile bar, contact page and CTAs, and "WhatsApp" appears as a contact preference.
+Buttons then appear in the header, heroes, mobile menu/action bar, contact details, service/location/FAQ contact points, footer and CTAs. The phone number and `wa.me` link are built from `BUSINESS.phone` in `src/content/site.ts`.
+
+After a valid doorstep enquiry is accepted by the configured lead-delivery provider, the form opens a WhatsApp draft containing the captured name, mobile number, TV brand, problem and any optional details. WhatsApp still requires the visitor to press **Send**; the website never claims that opening a draft sent a message. If the browser blocks the new tab, the form's WhatsApp link remains available.
 
 ## Business details and unverified facts
 

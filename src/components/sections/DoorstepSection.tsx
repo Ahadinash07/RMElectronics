@@ -1,4 +1,4 @@
-import { CallLink } from "@/components/analytics/ContactLinks";
+import { CallLink, WhatsAppLink } from "@/components/analytics/ContactLinks";
 import { BookRepairButton } from "@/components/forms/BookRepairButton";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { DOORSTEP } from "@/content/site";
@@ -36,6 +36,7 @@ export function DoorstepSection({ tone = "surface", headingId = "doorstep-headin
           <div className="mt-5 flex flex-col gap-3 sm:flex-row">
             <BookRepairButton placement="doorstep_section" size="lg" />
             <CallLink placement="doorstep_section" asButton variant="secondary" size="lg" />
+            <WhatsAppLink placement="doorstep_section" asButton size="lg" />
           </div>
         </div>
         <ul className="grid gap-3 sm:grid-cols-2">

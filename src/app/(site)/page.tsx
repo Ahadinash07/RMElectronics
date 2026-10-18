@@ -12,12 +12,13 @@ import { ServiceGrid } from "@/components/sections/ServiceGrid";
 import { TrustPoints } from "@/components/sections/TrustPoints";
 import { GallerySection } from "@/components/sections/GallerySection";
 import { GENERAL_FAQS } from "@/content/faqs";
+import { BUSINESS } from "@/content/site";
 import { buildMetadata, localBusinessJsonLd, websiteJsonLd } from "@/lib/seo";
 
 export const metadata = buildMetadata({
   title: "Doorstep TV Repair in Hyderabad | RM Electronics",
   description:
-    "RM Electronics sends a technician to your home for LCD, LED and Smart TV repair across Hyderabad. Visiting charges from \u20b9199. Call 78934 57190.",
+    `RM Electronics sends a technician to your home for LCD, LED and Smart TV repair across Hyderabad. Visiting charges from \u20b9199. Call ${BUSINESS.phone.display}.`,
   path: "/",
 });
 

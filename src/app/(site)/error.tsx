@@ -1,6 +1,6 @@
 "use client";
 
-import { CallLink } from "@/components/analytics/ContactLinks";
+import { CallLink, WhatsAppLink } from "@/components/analytics/ContactLinks";
 import { buttonClasses } from "@/components/ui/button-styles";
 
 export default function ErrorPage({ reset }: { error: Error & { digest?: string }; reset: () => void }) {
@@ -16,6 +16,7 @@ export default function ErrorPage({ reset }: { error: Error & { digest?: string 
             Try again
           </button>
           <CallLink placement="error_page" asButton variant="secondary" size="lg" />
+          <WhatsAppLink placement="error_page" asButton size="lg" />
         </div>
       </div>
     </section>

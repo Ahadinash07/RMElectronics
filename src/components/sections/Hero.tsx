@@ -42,10 +42,8 @@ export function Hero() {
           </ul>
           <div className="mt-5 flex flex-col gap-3 sm:flex-row">
             <CallLink placement="hero" asButton variant="primary" size="lg" />
-            <BookRepairButton placement="hero" variant="secondary" size="lg" className="lg:hidden" />
-          </div>
-          <div className="mt-3 sm:max-w-xs">
             <WhatsAppLink placement="hero" asButton size="lg" className="w-full" />
+            <BookRepairButton placement="hero" variant="secondary" size="lg" className="lg:hidden" />
           </div>
           <p className="mt-4 text-sm text-lavender-200">An independent TV repair service. Repair outcomes depend on the TV and the fault.</p>
         </div>

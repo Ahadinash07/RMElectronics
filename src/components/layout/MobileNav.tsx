@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import { CallLink } from "@/components/analytics/ContactLinks";
+import { CallLink, WhatsAppLink } from "@/components/analytics/ContactLinks";
 import { BookRepairButton } from "@/components/forms/BookRepairButton";
 import { Icon } from "@/components/ui/Icon";
 import { NavLinks } from "./NavLinks";
@@ -55,6 +55,7 @@ export function MobileNav() {
           <div className="grid gap-3 pb-3 pt-4 sm:grid-cols-2">
             <BookRepairButton placement="mobile_menu" size="lg" onClick={close}>Book Doorstep Repair</BookRepairButton>
             <CallLink placement="mobile_menu" asButton variant="secondary" size="lg" />
+            <WhatsAppLink placement="mobile_menu" asButton size="lg" />
           </div>
         </nav>
       </div>

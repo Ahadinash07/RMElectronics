@@ -1,4 +1,4 @@
-import { CallLink } from "@/components/analytics/ContactLinks";
+import { CallLink, WhatsAppLink } from "@/components/analytics/ContactLinks";
 import { BookRepairButton } from "@/components/forms/BookRepairButton";
 import { FinalCta } from "@/components/sections/FinalCta";
 import { GalleryGrid } from "@/components/sections/GalleryGrid";
@@ -28,6 +28,7 @@ export default function GalleryPage() {
           <>
             <BookRepairButton placement="gallery_hero" size="lg" />
             <CallLink placement="gallery_hero" asButton variant="secondary" size="lg" />
+            <WhatsAppLink placement="gallery_hero" asButton size="lg" />
           </>
         }
       >

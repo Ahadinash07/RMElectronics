@@ -85,7 +85,6 @@ export const EMPTY_VALUES: EnquiryFormValues = {
 /** Removes control characters, collapses whitespace, trims. */
 export function cleanText(input: unknown, maxLength: number): string {
   if (typeof input !== "string") return "";
-  // eslint-disable-next-line no-control-regex
   const withoutControls = input.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "");
   return withoutControls.replace(/\s+/g, " ").trim().slice(0, maxLength + 1);
 }
@@ -93,7 +92,6 @@ export function cleanText(input: unknown, maxLength: number): string {
 /** Multi-line version that keeps single newlines (for the details box). */
 export function cleanMultiline(input: unknown, maxLength: number): string {
   if (typeof input !== "string") return "";
-  // eslint-disable-next-line no-control-regex
   const withoutControls = input.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "");
   return withoutControls
     .replace(/\r\n?/g, "\n")
@@ -105,7 +103,7 @@ export function cleanMultiline(input: unknown, maxLength: number): string {
 
 /**
  * Accepts common ways of writing an Indian mobile number:
- * 7893457190, 78934 57190, 07893457190, 917893457190, +91 78934-57190, (+91) 7893457190.
+ * 9876543210, 98765 43210, 09876543210, 919876543210, +91 98765-43210, (+91) 9876543210.
  * Returns +91XXXXXXXXXX, or null if it is not a valid 10-digit mobile starting 6-9.
  */
 export function normalizeIndianMobile(raw: unknown): string | null {
@@ -174,9 +172,9 @@ export function validateEnquiry(raw: unknown): ValidationResult {
   else if (!isOneOf(PROBLEM_OPTIONS, problem)) errors.problem = "Please choose a problem from the list.";
 
   const locality = cleanText(src.locality, LIMITS.localityMax);
-  if (locality.length < LIMITS.localityMin) errors.locality = "Please enter your area in Hyderabad, for example Nagole.";
+  if (locality && locality.length < LIMITS.localityMin) errors.locality = "Please enter at least two characters for your area.";
   else if (locality.length > LIMITS.localityMax) errors.locality = `Area must be ${LIMITS.localityMax} characters or fewer.`;
-  else if (!LOCALITY_PATTERN.test(locality)) errors.locality = "Area contains characters we cannot accept.";
+  else if (locality && !LOCALITY_PATTERN.test(locality)) errors.locality = "Area contains characters we cannot accept.";
 
   const model = cleanText(src.model, LIMITS.modelMax);
   if (model.length > LIMITS.modelMax) errors.model = `Model must be ${LIMITS.modelMax} characters or fewer.`;

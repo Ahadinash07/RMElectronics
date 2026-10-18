@@ -46,6 +46,22 @@ describe("validateEnquiry", () => {
     }
   });
 
+  it("accepts the form's required fields without optional area or extra details", () => {
+    const r = validateEnquiry({
+      name: "Ravi Kumar",
+      phone: "98765 43210",
+      brand: "Samsung",
+      problem: "Sound but no picture",
+      consent: true,
+    });
+    assert.equal(r.ok, true);
+    if (r.ok) {
+      assert.equal(r.data.locality, "");
+      assert.equal(r.data.model, "");
+      assert.equal(r.data.details, "");
+    }
+  });
+
   it("requires consent to be literally true", () => {
     for (const consent of [false, "true", 1, undefined]) {
       const r = validateEnquiry({ ...valid, consent });
@@ -67,7 +83,7 @@ describe("validateEnquiry", () => {
     const r = validateEnquiry({});
     assert.equal(r.ok, false);
     if (!r.ok) {
-      for (const f of ["name", "phone", "brand", "problem", "locality", "consent"] as const) assert.ok(r.errors[f], f);
+      for (const f of ["name", "phone", "brand", "problem", "consent"] as const) assert.ok(r.errors[f], f);
       assert.equal(firstInvalidField(r.errors), "name");
     }
   });

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CallLink } from "@/components/analytics/ContactLinks";
+import { CallLink, WhatsAppLink } from "@/components/analytics/ContactLinks";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { buttonClasses } from "@/components/ui/button-styles";
@@ -33,6 +33,7 @@ export default function NotFound() {
             </div>
             <p className="mt-6">
               <CallLink placement="not_found" className="text-link font-semibold" />
+              <WhatsAppLink placement="not_found" className="ml-4 text-link font-semibold" />
             </p>
           </div>
         </section>
