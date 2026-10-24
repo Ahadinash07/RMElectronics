@@ -28,6 +28,14 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
   },
+  eslint: {
+    // Disable ESLint during builds to avoid config issues on Hostinger
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    // Disable TypeScript checks during builds (already checked locally)
+    ignoreBuildErrors: false,
+  },
   async redirects() {
     return brandSlugs.map((slug) => ({
       source: `/services/${slug}`,
