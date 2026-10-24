@@ -20,7 +20,7 @@ function resolveSiteUrl(raw: string | undefined): string {
 /** Origin only (no path, no trailing slash). Falls back to localhost if the env var is empty or malformed. */
 export const SITE_URL = resolveSiteUrl(process.env.NEXT_PUBLIC_SITE_URL);
 
-export const WHATSAPP_VERIFIED = process.env.NEXT_PUBLIC_WHATSAPP_VERIFIED === "true";
+export const WHATSAPP_VERIFIED = (process.env.NEXT_PUBLIC_WHATSAPP_VERIFIED === "true") || false;
 
 export type BusinessHours = {
   /** e.g. "Mon-Sat" */
