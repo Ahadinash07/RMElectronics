@@ -6,6 +6,8 @@ import { RepairEnquiryForm } from "@/components/forms/RepairEnquiryForm";
 import { HoursBlock } from "@/components/sections/HoursBlock";
 import { JsonLd } from "@/components/sections/JsonLd";
 import { MapEmbed } from "@/components/sections/MapEmbed";
+import { FacebookPageEmbed } from "@/components/sections/FacebookPageEmbed";
+import { InstagramEmbed } from "@/components/sections/InstagramEmbed";
 import { PageHero } from "@/components/sections/PageHero";
 import { SectionHeading } from "@/components/sections/SectionHeading";
 import { Icon } from "@/components/ui/Icon";
@@ -136,6 +138,18 @@ export default function ContactPage() {
           </SectionHeading>
           <div className="mt-6">
             <MapEmbed />
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="social-heading" className="section bg-white">
+        <div className="container-page">
+          <SectionHeading id="social-heading" eyebrow="Social" title="Follow RM Electronics on Facebook and Instagram">
+            See recent updates, posts and work from the shop.
+          </SectionHeading>
+          <div className="mt-6 grid gap-8 lg:grid-cols-2">
+            <FacebookPageEmbed />
+            <InstagramEmbed />
           </div>
         </div>
       </section>

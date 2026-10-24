@@ -10,6 +10,9 @@ import { ProcessSteps } from "@/components/sections/ProcessSteps";
 import { ServiceGrid } from "@/components/sections/ServiceGrid";
 import { TrustPoints } from "@/components/sections/TrustPoints";
 import { GallerySection } from "@/components/sections/GallerySection";
+import { FacebookPageEmbed } from "@/components/sections/FacebookPageEmbed";
+import { InstagramEmbed } from "@/components/sections/InstagramEmbed";
+import { SectionHeading } from "@/components/sections/SectionHeading";
 import { GENERAL_FAQS } from "@/content/faqs";
 import { BUSINESS } from "@/content/site";
 import { buildMetadata, localBusinessJsonLd, websiteJsonLd } from "@/lib/seo";
@@ -33,6 +36,19 @@ export default function HomePage() {
       <ProcessSteps />
       <GallerySection tone="surface" count={6} />
       <TrustPoints tone="surface" />
+
+      <section className="section bg-white" aria-labelledby="social-heading">
+        <div className="container-page">
+          <SectionHeading id="social-heading" eyebrow="Follow us" title="See updates from RM Electronics">
+            Latest posts from our Facebook page and Instagram profile.
+          </SectionHeading>
+          <div className="mt-6 grid gap-8 lg:grid-cols-2">
+            <FacebookPageEmbed />
+            <InstagramEmbed />
+          </div>
+        </div>
+      </section>
+
       <LocationSection tone="white" />
       <FaqSection faqs={GENERAL_FAQS} />
       <FinalCta />

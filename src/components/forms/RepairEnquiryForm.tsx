@@ -235,12 +235,7 @@ export function RepairEnquiryForm({ active, placement, defaultBrand, onSuccess }
       }
 
       if (response.ok && data?.ok === true) {
-        // The provider has accepted the enquiry. The user still sends the WhatsApp draft manually.
-        if (BUSINESS.whatsappVerified) {
-          const whatsappUrl = buildWhatsAppUrl(formatEnquiryWhatsAppMessage(effective));
-          window.open(whatsappUrl, "_blank", "noopener,noreferrer");
-        }
-        // Server accepted the lead: only now reset and move to the thank-you page.
+        // Server accepted the lead: reset and move to the thank-you page.
         submissionId.current = null;
         setValues(EMPTY_VALUES);
         setErrors({});
@@ -506,14 +501,67 @@ export function RepairEnquiryForm({ active, placement, defaultBrand, onSuccess }
             <Icon name="arrowRight" className="h-4 w-4" />
           </button>
         ) : (
-          <button
-            type="submit"
-            disabled={submitting}
-            className={buttonClasses(BUSINESS.whatsappVerified ? "whatsapp" : "primary", "md", "ml-auto")}
-          >
-            {submitting ? "Sending..." : BUSINESS.whatsappVerified ? "Continue with WhatsApp" : "Book doorstep visit"}
-            {submitting ? null : <Icon name={BUSINESS.whatsappVerified ? "whatsapp" : "arrowRight"} className="h-4 w-4" />}
-          </button>
+          <>
+            {BUSINESS.whatsappVerified ? (
+              <button
+                type="button"
+                onClick={async () => {
+                  // Validate before redirecting
+                  setContactAttempted(true);
+                  const clientErrors = validateFormValues(effective);
+                  if (Object.keys(clientErrors).length > 0) {
+                    showFieldErrors(clientErrors, "validation_client");
+                    return;
+                  }
+
+                  // Redirect to WhatsApp immediately
+                  const whatsappUrl = buildWhatsAppUrl(formatEnquiryWhatsAppMessage(effective));
+                  window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+
+                  // Submit to API in background for lead capture (non-blocking)
+                  submissionId.current ??= uuid();
+                  try {
+                    await fetch("/api/repair-enquiry", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        ...effective,
+                        website: honeypot,
+                        elapsedMs: Math.round(performance.now() - openedAt.current),
+                        submissionId: submissionId.current,
+                        attribution: readAttribution(),
+                      }),
+                    });
+                  } catch {
+                    // Silently ignore API errors - user already has WhatsApp open
+                  }
+
+                  // Reset form and redirect to thank-you
+                  submissionId.current = null;
+                  setValues(EMPTY_VALUES);
+                  setErrors({});
+                  setContactAttempted(false);
+                  setTouchedFields({});
+                  setStep(1);
+                  onSuccess?.();
+                  router.push("/thank-you");
+                }}
+                className={buttonClasses("whatsapp", "md", "ml-auto")}
+              >
+                Continue with WhatsApp
+                <Icon name="whatsapp" className="h-4 w-4" />
+              </button>
+            ) : (
+              <button
+                type="submit"
+                disabled={submitting}
+                className={buttonClasses("primary", "md", "ml-auto")}
+              >
+                {submitting ? "Sending..." : "Book doorstep visit"}
+                {submitting ? null : <Icon name="arrowRight" className="h-4 w-4" />}
+              </button>
+            )}
+          </>
         )}
       </div>
 

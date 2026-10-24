@@ -107,6 +107,25 @@ export const MAPS_DIRECTIONS_URL = `https://www.google.com/maps/dir/?api=1&desti
   BUSINESS.address.full,
 )}`;
 
+/**
+ * Google Maps embed iframe URL for the business location.
+ * Use this exact embed code everywhere on the site.
+ */
+export const MAPS_EMBED_URL =
+  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3807.7888204702253!2d78.55153829999999!3d17.373891899999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb9942d9dca92d%3A0xdbd39e27d8c873df!2sRM%20Electronics%20TV%20Repair%20Services!5e0!3m2!1sen!2sin!4v1792473528982!5m2!1sen!2sin";
+
+/**
+ * Facebook Page embed URL (Page Plugin iframe).
+ */
+export const FACEBOOK_PAGE_EMBED_URL = `https://www.facebook.com/plugins/page.php?href=${encodeURIComponent(
+  BUSINESS.social.facebook,
+)}&tabs=timeline&width=500&height=600&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true`;
+
+/**
+ * Instagram profile embed (official oEmbed/profile embed).
+ */
+export const INSTAGRAM_PROFILE_URL = BUSINESS.social.instagram;
+
 /** Builds a wa.me link. Only call this when BUSINESS.whatsappVerified is true. */
 export function buildWhatsAppUrl(message?: string): string {
   const text =
